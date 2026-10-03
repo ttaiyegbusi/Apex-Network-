@@ -31,17 +31,11 @@ const testimonials: Testimonial[] = [
   },
 ];
 
-function TestimonialCard({
-  testimonial,
-  large = false,
-}: {
-  testimonial: Testimonial;
-  large?: boolean;
-}) {
+function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
   return (
     <div
-      className="relative rounded-2xl overflow-hidden h-full"
-      style={{ background: testimonial.gradient, minHeight: large ? "440px" : "440px" }}
+      className="relative rounded-2xl overflow-hidden h-full min-h-[340px] md:min-h-[400px] lg:min-h-[440px]"
+      style={{ background: testimonial.gradient }}
     >
       {testimonial.photo && (
         <Image
@@ -88,7 +82,7 @@ export function TestimonialsSection() {
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-5">
           <ScrollFadeIn className="md:col-span-2 lg:col-span-6">
-            <TestimonialCard testimonial={featured} large />
+            <TestimonialCard testimonial={featured} />
           </ScrollFadeIn>
 
           {rest.map((testimonial, index) => (

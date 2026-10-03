@@ -45,7 +45,7 @@ export function HeroSection() {
             <h1 className="text-h3 md:text-h2 lg:text-h1 text-black max-w-4xl">
               One place for <span className="text-black">all </span>
               <span className="text-orange-950">your</span>
-              <br />
+              <br className="hidden md:inline" />
               <span className="text-orange-950">Digital Finances.</span>
             </h1>
             <p className="text-p-md md:text-p-lg text-gray-700 max-w-xl">
@@ -66,7 +66,7 @@ export function HeroSection() {
         {/* Phone Mockups */}
         <ScrollFadeIn delay={0.3}>
           <div className="relative w-full flex justify-center items-end">
-            <div className="relative w-full max-w-[1000px]">
+            <div className="relative w-[150%] max-w-none md:w-full md:max-w-[1000px]">
               <Image
                 src="/hero/phones.png"
                 alt="Apex Network mobile app"

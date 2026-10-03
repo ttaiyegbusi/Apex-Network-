@@ -82,9 +82,9 @@ export function FAQSection() {
           </ScrollFadeIn>
 
           {/* Right column */}
-          <ScrollFadeIn delay={0.1} className="lg:col-span-7">
+          <ScrollFadeIn delay={0.1} className="lg:col-span-7 min-w-0">
             {/* Category tabs */}
-            <div className="flex flex-wrap gap-2 mb-6 bg-gray-50 p-1.5 rounded-full w-fit">
+            <div className="no-scrollbar flex gap-2 mb-6 bg-gray-50 p-1.5 rounded-full w-full md:w-fit overflow-x-auto">
               {categories.map((category) => (
                 <button
                   key={category}
@@ -92,7 +92,7 @@ export function FAQSection() {
                     setActiveCategory(category);
                     setOpenIndex(0);
                   }}
-                  className={`px-4 py-2 rounded-full text-p-sm font-medium transition-all ${
+                  className={`shrink-0 whitespace-nowrap px-4 py-2 rounded-full text-p-sm font-medium transition-all ${
                     activeCategory === category
                       ? "bg-white text-black shadow-sm"
                       : "text-gray-500 hover:text-black"
