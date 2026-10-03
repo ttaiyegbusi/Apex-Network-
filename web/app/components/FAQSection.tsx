@@ -1,81 +1,162 @@
 "use client";
 
-import { ScrollFadeIn } from "./ScrollFadeIn";
 import { useState } from "react";
+import { ScrollFadeIn } from "./ScrollFadeIn";
 
-const faqs = [
+const categories = [
+  "All",
+  "Account & Security",
+  "Deposit & Wallets",
+  "Technical Support",
+] as const;
+
+type Category = (typeof categories)[number];
+
+const faqs: { question: string; answer: string; category: Exclude<Category, "All"> }[] = [
   {
-    question: "How do I get started with Apex Network?",
-    answer: "Simply download our app, create an account, verify your identity, and you're ready to start managing your crypto and fiat assets. The process takes less than 5 minutes.",
+    question: "Are there hidden fees?",
+    answer:
+      "No. We believe in transparent pricing. Any applicable fees are clearly displayed before you confirm a transaction, so you always know exactly what you'll pay. There are no surprise charges.",
+    category: "Deposit & Wallets",
   },
   {
-    question: "Is my crypto really secure?",
-    answer: "Yes, we use industry-leading encryption and multi-layer security protocols. Your assets are stored in secure, audited wallets with insurance protection.",
+    question: "How do I report a transaction I don't recognize?",
+    answer:
+      "Open the transaction from your history and tap Report. Our team reviews every report and will get back to you, usually within a few hours.",
+    category: "Account & Security",
   },
   {
-    question: "What are the fees?",
-    answer: "We offer transparent, competitive pricing. Most transactions cost less than 1%, with no hidden fees. Check our pricing page for detailed breakdown.",
+    question: "How do I enable two-factor authentication?",
+    answer:
+      "Go to Settings, then Security, and turn on Two-Factor Authentication. You can use an authenticator app or SMS. We strongly recommend an authenticator app.",
+    category: "Account & Security",
   },
   {
-    question: "Can I use virtual cards globally?",
-    answer: "Yes, our virtual cards work at merchants worldwide that accept Mastercard. You can shop online or set up subscriptions in any currency.",
+    question: "How do I secure my account?",
+    answer:
+      "Use a strong, unique password, turn on two-factor authentication, and never share your login details or one-time codes with anyone, including anyone claiming to be Apex support.",
+    category: "Account & Security",
   },
   {
-    question: "How fast are transactions?",
-    answer: "Crypto transfers are typically confirmed within minutes. Fiat transfers depend on your bank but usually complete within 1-2 business days.",
+    question: "How long do transactions take?",
+    answer:
+      "Crypto transfers usually confirm within minutes. Naira payouts typically land in your bank account within 5 to 10 minutes, depending on your bank.",
+    category: "Deposit & Wallets",
   },
   {
-    question: "Do you support all cryptocurrencies?",
-    answer: "We support all major cryptocurrencies including Bitcoin, Ethereum, USDC, and more. Check our full list of supported assets in the app.",
+    question: "How do I fund my virtual card?",
+    answer:
+      "Open the Cards tab, select your virtual card, and tap Fund. You can top up from your Naira balance or any crypto wallet in your account.",
+    category: "Technical Support",
   },
 ];
 
 export function FAQSection() {
+  const [activeCategory, setActiveCategory] = useState<Category>("All");
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
-  return (
-    <section className="py-24 bg-gray-50">
-      <div className="max-w-4xl mx-auto px-6 lg:px-8">
-        <ScrollFadeIn>
-          <div className="text-center mb-16">
-            <p className="text-gray-500 text-sm mb-3">FAQ</p>
-            <h2 className="text-4xl md:text-5xl font-bold text-black leading-tight">
-              Frequently Asked Questions
-            </h2>
-          </div>
-        </ScrollFadeIn>
+  const visible =
+    activeCategory === "All"
+      ? faqs
+      : faqs.filter((faq) => faq.category === activeCategory);
 
-        <ScrollFadeIn>
-          <div className="space-y-3">
-            {faqs.map((faq, index) => (
-              <div
-                key={index}
-                className="bg-white rounded-2xl overflow-hidden border border-gray-100 hover:border-gray-200 transition-colors"
-              >
+  return (
+    <section className="py-24 bg-white">
+      <div className="page-container">
+        <div className="grid lg:grid-cols-12 gap-12 lg:gap-16 items-start">
+          {/* Left column */}
+          <ScrollFadeIn className="lg:col-span-5">
+            <div
+              className="w-16 h-16 rounded-full mb-8 flex items-center justify-center"
+              style={{
+                background:
+                  "radial-gradient(circle at 35% 30%, var(--color-orange-200) 0%, var(--color-orange-400) 55%, var(--color-primary) 100%)",
+              }}
+            >
+              <span className="text-white text-h5">?</span>
+            </div>
+            <p className="text-p-sm text-gray-500 mb-4">FAQ</p>
+            <h2 className="text-h4 md:text-h3 text-black">
+              Questions you&apos;re probably thinking about. We Answer them all
+            </h2>
+          </ScrollFadeIn>
+
+          {/* Right column */}
+          <ScrollFadeIn delay={0.1} className="lg:col-span-7">
+            {/* Category tabs */}
+            <div className="flex flex-wrap gap-2 mb-6 bg-gray-50 p-1.5 rounded-full w-fit">
+              {categories.map((category) => (
                 <button
-                  className="w-full flex justify-between items-center p-6 hover:bg-gray-50 transition text-left"
-                  onClick={() =>
-                    setOpenIndex(openIndex === index ? null : index)
-                  }
+                  key={category}
+                  onClick={() => {
+                    setActiveCategory(category);
+                    setOpenIndex(0);
+                  }}
+                  className={`px-4 py-2 rounded-full text-p-sm font-medium transition-all ${
+                    activeCategory === category
+                      ? "bg-white text-black shadow-sm"
+                      : "text-gray-500 hover:text-black"
+                  }`}
                 >
-                  <span className="font-semibold text-base text-black pr-4">
-                    {faq.question}
-                  </span>
-                  <div className={`flex-shrink-0 w-8 h-8 rounded-full flex items-center justify-center transition-all ${openIndex === index ? "bg-[#FF7A00] text-white rotate-45" : "bg-gray-100 text-gray-600"}`}>
-                    <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
-                      <path d="M7 2V12M2 7H12" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/>
-                    </svg>
-                  </div>
+                  {category}
                 </button>
-                {openIndex === index && (
-                  <div className="px-6 pb-6 text-gray-600 leading-relaxed">
-                    {faq.answer}
+              ))}
+            </div>
+
+            {/* Accordion */}
+            <div className="bg-gray-50 rounded-2xl p-2">
+              {visible.length === 0 && (
+                <p className="text-p-sm text-gray-500 p-6">
+                  No questions in this category yet.
+                </p>
+              )}
+
+              {visible.map((faq, index) => {
+                const isOpen = openIndex === index;
+                return (
+                  <div
+                    key={faq.question}
+                    className={`rounded-xl transition-colors ${
+                      isOpen ? "bg-white shadow-sm" : ""
+                    }`}
+                  >
+                    <button
+                      className="w-full flex justify-between items-center gap-4 p-5 text-left"
+                      onClick={() => setOpenIndex(isOpen ? null : index)}
+                      aria-expanded={isOpen}
+                    >
+                      <span className="text-p-md font-medium text-black">
+                        {faq.question}
+                      </span>
+                      <svg
+                        width="16"
+                        height="16"
+                        viewBox="0 0 16 16"
+                        fill="none"
+                        className={`flex-shrink-0 text-gray-400 transition-transform duration-200 ${
+                          isOpen ? "rotate-180" : ""
+                        }`}
+                      >
+                        <path
+                          d="M4 6L8 10L12 6"
+                          stroke="currentColor"
+                          strokeWidth="1.5"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                        />
+                      </svg>
+                    </button>
+                    {isOpen && (
+                      <div className="px-5 pb-5 -mt-1 text-p-md text-gray-500">
+                        {faq.answer}
+                      </div>
+                    )}
                   </div>
-                )}
-              </div>
-            ))}
-          </div>
-        </ScrollFadeIn>
+                );
+              })}
+            </div>
+          </ScrollFadeIn>
+        </div>
       </div>
     </section>
   );

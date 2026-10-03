@@ -2,66 +2,85 @@
 
 import Image from "next/image";
 
-const footerLinks = {
-  Product: ["Features", "Pricing", "Security", "Roadmap"],
-  Company: ["About Us", "Blog", "Careers", "Contact"],
-  Legal: ["Privacy Policy", "Terms of Service", "Compliance", "Cookies"],
-  Social: ["Twitter", "LinkedIn", "Discord", "Instagram"],
-};
+const footerColumns = [
+  {
+    heading: "Products",
+    links: ["Personal", "Business", "Marketing"],
+  },
+  {
+    heading: "Company",
+    links: ["About Us", "Contact Us", "Careers", "Blog", "FAQs"],
+  },
+  {
+    heading: "Legal",
+    links: ["Privacy Policy", "Terms of Use", "Asset Recovery Policy"],
+  },
+];
 
 export function Footer() {
-  const currentYear = new Date().getFullYear();
-
   return (
-    <footer className="bg-black text-white">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8 py-16">
-        <div className="grid grid-cols-2 md:grid-cols-5 gap-8 mb-12">
+    <footer className="relative bg-white overflow-hidden">
+      <div className="page-container pt-20">
+        <div className="grid md:grid-cols-2 lg:grid-cols-12 gap-12 lg:gap-8">
           {/* Brand */}
-          <div className="col-span-2 md:col-span-1 flex flex-col gap-4">
-            <div className="flex items-center brightness-0 invert opacity-100" style={{ filter: 'none' }}>
-              <Image
-                src="/hero/logo.png"
-                alt="Apex Network"
-                width={120}
-                height={40}
-                className="h-10 w-auto object-contain"
-              />
-            </div>
-            <p className="text-sm text-gray-400 leading-relaxed">
-              One place for all your digital finances. Simple, secure, unified.
+          <div className="lg:col-span-5">
+            <Image
+              src="/hero/logo.png"
+              alt="Apex Network"
+              width={120}
+              height={40}
+              className="h-10 w-auto object-contain mb-6"
+            />
+            <p className="text-p-md text-gray-500 max-w-sm mb-8">
+              Apex makes it simple to trade gift cards and crypto, pay bills and spend
+              in dollars, all from one app.
             </p>
-          </div>
-
-          {/* Links */}
-          {Object.entries(footerLinks).map(([category, links]) => (
-            <div key={category} className="flex flex-col gap-4">
-              <p className="font-semibold text-white text-sm">{category}</p>
-              {links.map((link) => (
-                <a
-                  key={link}
-                  href="#"
-                  className="text-sm text-gray-400 hover:text-[#FF7A00] transition"
-                >
-                  {link}
-                </a>
-              ))}
+            <div className="flex flex-col sm:flex-row gap-3">
+              <button className="bg-black text-white px-7 py-3 rounded-full text-p-md font-medium hover:bg-gray-900 transition">
+                Get Started
+              </button>
+              <button className="bg-white text-black border border-gray-200 px-7 py-3 rounded-full text-p-md font-medium hover:bg-gray-50 transition">
+                Download App
+              </button>
             </div>
-          ))}
-        </div>
+          </div>
 
-        <div className="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between items-center gap-4">
-          <p className="text-sm text-gray-500">
-            © {currentYear} Apex Network. All rights reserved.
-          </p>
-          <div className="flex gap-6">
-            <a href="#" className="text-sm text-gray-500 hover:text-[#FF7A00] transition">
-              Privacy Policy
-            </a>
-            <a href="#" className="text-sm text-gray-500 hover:text-[#FF7A00] transition">
-              Terms of Service
-            </a>
+          {/* Link columns */}
+          <div className="lg:col-span-7 grid grid-cols-2 sm:grid-cols-3 gap-8">
+            {footerColumns.map((column) => (
+              <div key={column.heading}>
+                <p className="text-label-lg text-black mb-5">{column.heading}</p>
+                <ul className="space-y-3">
+                  {column.links.map((link) => (
+                    <li key={link}>
+                      <a
+                        href="#"
+                        className="text-p-md text-gray-500 hover:text-primary transition"
+                      >
+                        {link}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
           </div>
         </div>
+      </div>
+
+      {/* Oversized wordmark watermark */}
+      <div
+        aria-hidden="true"
+        className="select-none pointer-events-none text-center leading-none mt-16"
+        style={{
+          fontSize: "clamp(6rem, 22vw, 20rem)",
+          fontWeight: 700,
+          color: "var(--color-gray-100)",
+          letterSpacing: "-0.03em",
+          marginBottom: "-0.22em",
+        }}
+      >
+        Apex
       </div>
     </footer>
   );

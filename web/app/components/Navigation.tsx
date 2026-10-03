@@ -23,7 +23,7 @@ export function Navigation() {
         isScrolled ? "bg-white/95 shadow-sm backdrop-blur-md" : "bg-transparent"
       }`}
     >
-      <div className="max-w-7xl mx-auto px-6 lg:px-8 py-5">
+      <div className="page-container py-5">
         <div className="flex justify-between items-center">
           {/* Logo */}
           <div className="flex items-center">
@@ -42,7 +42,7 @@ export function Navigation() {
             {navLinks.map((link) => (
               <button
                 key={link}
-                className="text-[15px] font-medium text-gray-800 hover:text-[#FF7A00] transition"
+                className="text-p-md font-medium text-gray-800 hover:text-primary transition"
               >
                 {link}
               </button>
@@ -51,17 +51,17 @@ export function Navigation() {
 
           {/* Desktop CTA */}
           <div className="hidden lg:flex items-center gap-3">
-            <button className="flex items-center gap-1.5 bg-white border border-gray-200 rounded-full px-4 py-2 text-sm font-medium hover:bg-gray-50 transition">
+            <button className="flex items-center gap-1.5 bg-white border border-gray-200 rounded-full px-4 py-2 text-p-sm font-medium hover:bg-gray-50 transition">
               <span>🇺🇸</span>
               <span>ENG</span>
               <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
                 <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
             </button>
-            <button className="bg-black text-white px-6 py-2.5 rounded-full font-medium text-sm hover:bg-gray-900 transition">
+            <button className="bg-black text-white px-6 py-2.5 rounded-full text-p-sm font-medium hover:bg-gray-900 transition">
               Login
             </button>
-            <button className="bg-white text-black border border-gray-200 px-5 py-2.5 rounded-full font-medium text-sm hover:bg-gray-50 transition">
+            <button className="bg-white text-black border border-gray-200 px-5 py-2.5 rounded-full text-p-sm font-medium hover:bg-gray-50 transition">
               Open an Account
             </button>
           </div>
@@ -90,7 +90,7 @@ export function Navigation() {
             {navLinks.map((link) => (
               <button
                 key={link}
-                className="text-left text-base font-medium text-gray-800 hover:text-[#FF7A00] transition py-2"
+                className="text-left text-p-md font-medium text-gray-800 hover:text-primary transition py-2"
                 onClick={() => setIsOpen(false)}
               >
                 {link}

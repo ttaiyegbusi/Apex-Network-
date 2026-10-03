@@ -1,37 +1,53 @@
 "use client";
 
+import Image from "next/image";
 import { ScrollFadeIn } from "./ScrollFadeIn";
 
 export function BannerSection() {
   return (
-    <section className="py-16 md:py-20 bg-white">
-      <div className="max-w-7xl mx-auto px-6 lg:px-8">
-        <ScrollFadeIn>
-          <div className="relative bg-gradient-to-br from-[#FF7A00] to-[#FF5500] rounded-3xl p-10 md:p-16 overflow-hidden">
-            {/* Decorative circles */}
-            <div className="absolute -top-24 -right-24 w-96 h-96 bg-white/10 rounded-full blur-2xl pointer-events-none" />
-            <div className="absolute -bottom-32 -left-32 w-96 h-96 bg-white/10 rounded-full blur-2xl pointer-events-none" />
-
-            <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-8">
-              <div className="text-center md:text-left max-w-2xl">
-                <h2 className="text-3xl md:text-5xl font-bold text-white leading-tight mb-4">
-                  Ready to Take Control of Your Assets?
-                </h2>
-                <p className="text-lg text-white/90">
-                  Join thousands of users who trust Apex Network for their crypto and fiat management
-                </p>
-              </div>
-              <div className="flex flex-col sm:flex-row gap-3 flex-shrink-0">
-                <button className="bg-black text-white px-8 py-3.5 rounded-full font-medium hover:bg-gray-900 transition-all hover:scale-105">
+    <section
+      className="relative overflow-hidden"
+      style={{ background: "linear-gradient(135deg, var(--color-orange-400) 0%, var(--color-primary) 55%, var(--color-orange-600) 100%)" }}
+    >
+      <div className="page-container">
+        <div className="grid lg:grid-cols-2 gap-8 items-end">
+          {/* Copy */}
+          <ScrollFadeIn>
+            <div className="py-16 lg:py-24 text-white">
+              <p className="text-p-sm text-white/80 mb-3">Why Apex Network?</p>
+              <h2 className="text-h4 md:text-h3 lg:text-h2 mb-5 max-w-lg">
+                Your payout is minutes away
+              </h2>
+              <p className="text-p-md text-white/90 max-w-md mb-8">
+                Join 300,000+ people who trade gift cards and crypto on Apex. Sign up
+                free, check your rate, and get paid in Naira today.
+              </p>
+              <div className="flex flex-col sm:flex-row gap-3">
+                <button className="bg-black text-white px-8 py-3.5 rounded-full text-p-md font-medium hover:bg-gray-900 transition">
                   Get Started
                 </button>
-                <button className="bg-white text-black px-8 py-3.5 rounded-full font-medium hover:bg-gray-100 transition-all hover:scale-105">
+                <button className="border border-white text-white px-8 py-3.5 rounded-full text-p-md font-medium hover:bg-white/10 transition">
                   Download App
                 </button>
               </div>
             </div>
-          </div>
-        </ScrollFadeIn>
+          </ScrollFadeIn>
+
+          {/* Phones */}
+          <ScrollFadeIn delay={0.15}>
+            <div className="relative hidden lg:block h-[420px]">
+              <div className="absolute inset-x-0 bottom-0 translate-y-8">
+                <Image
+                  src="/hero/phones.png"
+                  alt="Apex Network mobile app"
+                  width={900}
+                  height={600}
+                  className="w-full h-auto object-contain"
+                />
+              </div>
+            </div>
+          </ScrollFadeIn>
+        </div>
       </div>
     </section>
   );

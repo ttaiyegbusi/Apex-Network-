@@ -1,16 +1,179 @@
 @import "tailwindcss";
 
-* {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
+/* Type scale transcribed from the Apex Networks Figma text styles.
+   Percent tracking in Figma maps to em here: -1% => -0.01em. */
+@theme {
+  --font-sans: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+
+  /* ---- Colour tokens, from the Apex Networks Figma export ---- */
+
+  /* Brand */
+  --color-primary: #fb8e0b;
+
+  /* 06-Foundations / orange (overrides Tailwind's default orange) */
+  --color-orange-50: #fff3eb;
+  --color-orange-100: #ffe6d5;
+  --color-orange-200: #ffd9c0;
+  --color-orange-300: #ffc197;
+  --color-orange-400: #ffa468;
+  --color-orange-500: #fa7319;
+  --color-orange-600: #e16614;
+  --color-orange-700: #ce5e12;
+  --color-orange-800: #b75310;
+  --color-orange-900: #96440d;
+  --color-orange-950: #71330a;
+
+  /* 06-Foundations / neutral-gray (overrides Tailwind's default gray) */
+  --color-gray-0: #ffffff;
+  --color-gray-50: #f7f7f7;
+  --color-gray-100: #f5f5f5;
+  --color-gray-200: #ebebeb;
+  --color-gray-300: #d1d1d1;
+  --color-gray-400: #a3a3a3;
+  --color-gray-500: #7b7b7b;
+  --color-gray-600: #5c5c5c;
+  --color-gray-700: #333333;
+  --color-gray-800: #262626;
+  --color-gray-900: #1c1c1c;
+  --color-gray-950: #171717;
+
+  /* 01-Tokens — semantic aliases */
+  --color-bg-strong: #171717;
+  --color-bg-surface: #262626;
+  --color-bg-sub: #d1d1d1;
+  --color-bg-soft: #ebebeb;
+  --color-bg-weak: #f7f7f7;
+  --color-bg-white-25: #f9f9f9;
+
+  --color-text-strong: #171717;
+  --color-text-sub: #5c5c5c;
+  --color-text-soft: #a3a3a3;
+  --color-text-disabled: #d1d1d1;
+
+  --color-stroke-strong: #171717;
+  --color-stroke-sub: #d1d1d1;
+  --color-stroke-soft: #ebebeb;
+
+  /* Title/* — Inter Display, Medium (500) */
+  --text-h1: 56px;
+  --text-h1--line-height: 1.08;
+  --text-h1--letter-spacing: -0.01em;
+  --text-h1--font-weight: 500;
+
+  --text-h2: 48px;
+  --text-h2--line-height: 1.1;
+  --text-h2--letter-spacing: -0.01em;
+  --text-h2--font-weight: 500;
+
+  --text-h3: 40px;
+  --text-h3--line-height: 1.15;
+  --text-h3--letter-spacing: -0.01em;
+  --text-h3--font-weight: 500;
+
+  --text-h4: 32px;
+  --text-h4--line-height: 1.2;
+  --text-h4--letter-spacing: -0.005em;
+  --text-h4--font-weight: 500;
+
+  --text-h5: 24px;
+  --text-h5--line-height: 1.3;
+  --text-h5--letter-spacing: 0em;
+  --text-h5--font-weight: 500;
+
+  --text-h6: 20px;
+  --text-h6--line-height: 1.35;
+  --text-h6--letter-spacing: 0em;
+  --text-h6--font-weight: 500;
+
+  /* Paragraph/* — Inter, Regular (400) */
+  --text-p-xl: 24px;
+  --text-p-xl--line-height: 1.5;
+  --text-p-xl--letter-spacing: -0.015em;
+  --text-p-xl--font-weight: 400;
+
+  --text-p-lg: 18px;
+  --text-p-lg--line-height: 1.55;
+  --text-p-lg--letter-spacing: -0.015em;
+  --text-p-lg--font-weight: 400;
+
+  --text-p-md: 16px;
+  --text-p-md--line-height: 1.6;
+  --text-p-md--letter-spacing: -0.011em;
+  --text-p-md--font-weight: 400;
+
+  --text-p-sm: 14px;
+  --text-p-sm--line-height: 1.6;
+  --text-p-sm--letter-spacing: -0.006em;
+  --text-p-sm--font-weight: 400;
+
+  --text-p-xs: 12px;
+  --text-p-xs--line-height: 1.6;
+  --text-p-xs--letter-spacing: 0em;
+  --text-p-xs--font-weight: 400;
+
+  /* Label/* — Inter, Medium (500) */
+  --text-label-xl: 24px;
+  --text-label-xl--line-height: 1.3;
+  --text-label-xl--letter-spacing: -0.015em;
+  --text-label-xl--font-weight: 500;
+
+  --text-label-lg: 18px;
+  --text-label-lg--line-height: 1.4;
+  --text-label-lg--letter-spacing: -0.015em;
+  --text-label-lg--font-weight: 500;
+
+  --text-label-xs: 12px;
+  --text-label-xs--line-height: 1.4;
+  --text-label-xs--letter-spacing: 0em;
+  --text-label-xs--font-weight: 500;
+
+  /* Subheading/* — Inter, Medium (500), uppercase */
+  --text-sub-md: 16px;
+  --text-sub-md--line-height: 1.4;
+  --text-sub-md--letter-spacing: 0.06em;
+  --text-sub-md--font-weight: 500;
+
+  --text-sub-sm: 14px;
+  --text-sub-sm--line-height: 1.4;
+  --text-sub-sm--letter-spacing: 0.06em;
+  --text-sub-sm--font-weight: 500;
+
+  --text-sub-xs: 12px;
+  --text-sub-xs--line-height: 1.4;
+  --text-sub-xs--letter-spacing: 0.04em;
+  --text-sub-xs--font-weight: 500;
+
+  --text-sub-2xs: 11px;
+  --text-sub-2xs--line-height: 1.4;
+  --text-sub-2xs--letter-spacing: 0.02em;
+  --text-sub-2xs--font-weight: 500;
+}
+
+/* Single source of truth for page gutters.
+   Figma frame is 1440px wide with 120px gutters => 1200px content. */
+@utility page-container {
+  margin-inline: auto;
+  max-width: 1440px;
+  padding-inline: 24px;
+
+  @media (width >= 768px) {
+    padding-inline: 48px;
+  }
+
+  @media (width >= 1024px) {
+    padding-inline: 100px;
+  }
 }
 
 html,
 body {
-  width: 100%;
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
-    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  font-family: var(--font-sans);
+  font-optical-sizing: auto;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Hide the horizontal scrollbar on the blog carousel track */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
 }
