@@ -1,7 +1,8 @@
 "use client";
 
-import { useRef } from "react";
 import { ScrollFadeIn } from "./ScrollFadeIn";
+import { CarouselArrows } from "./CarouselArrows";
+import { useCarousel } from "./useCarousel";
 
 const posts = [
   {
@@ -31,18 +32,7 @@ const posts = [
 ];
 
 export function BlogSection() {
-  const trackRef = useRef<HTMLDivElement>(null);
-
-  const scroll = (direction: "prev" | "next") => {
-    const track = trackRef.current;
-    if (!track) return;
-    const card = track.firstElementChild as HTMLElement | null;
-    const amount = card ? card.offsetWidth + 24 : 320;
-    track.scrollBy({
-      left: direction === "next" ? amount : -amount,
-      behavior: "smooth",
-    });
-  };
+  const { trackRef, scrollPrev, scrollNext } = useCarousel();
 
   return (
     <section className="py-24 bg-white">
@@ -56,38 +46,7 @@ export function BlogSection() {
               </h2>
             </div>
 
-            <div className="hidden sm:flex gap-3 flex-shrink-0 pb-2">
-              <button
-                onClick={() => scroll("prev")}
-                aria-label="Previous posts"
-                className="w-11 h-11 rounded-full border border-gray-200 flex items-center justify-center text-gray-600 hover:bg-gray-50 hover:text-black transition"
-              >
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                  <path
-                    d="M10 4L6 8L10 12"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </button>
-              <button
-                onClick={() => scroll("next")}
-                aria-label="Next posts"
-                className="w-11 h-11 rounded-full border border-gray-200 flex items-center justify-center text-gray-600 hover:bg-gray-50 hover:text-black transition"
-              >
-                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                  <path
-                    d="M6 4L10 8L6 12"
-                    stroke="currentColor"
-                    strokeWidth="1.5"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  />
-                </svg>
-              </button>
-            </div>
+            <CarouselArrows onPrev={scrollPrev} onNext={scrollNext} className="shrink-0 pb-2" />
           </div>
         </ScrollFadeIn>
 
@@ -99,7 +58,7 @@ export function BlogSection() {
           {posts.map((post) => (
             <article
               key={post.title}
-              className="snap-start flex-shrink-0 w-[280px] sm:w-[300px] lg:w-[300px] cursor-pointer"
+              className="snap-start shrink-0 w-[88%] sm:w-[300px] cursor-pointer"
             >
               {/* Thumbnail */}
               <div

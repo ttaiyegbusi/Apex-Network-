@@ -52,11 +52,11 @@ export function HeroSection() {
               Simplify your Crypto journey: Buy, sell and swap
               <br className="hidden md:block" /> cryptocurrencies with more possibilities
             </p>
-            <div className="flex flex-col sm:flex-row gap-4 pt-2">
-              <button className="bg-black text-white px-10 py-4 rounded-full text-p-md font-medium hover:bg-gray-900 transition-all">
+            <div className="flex flex-col sm:flex-row gap-4 pt-2 w-full sm:w-auto">
+              <button className="w-full sm:w-auto bg-black text-white px-10 py-4 rounded-full text-p-md font-medium hover:bg-gray-900 transition-all">
                 Get Started
               </button>
-              <button className="bg-white text-black border border-gray-200 px-10 py-4 rounded-full text-p-md font-medium hover:bg-gray-50 transition-all shadow-sm">
+              <button className="w-full sm:w-auto bg-white text-black border border-gray-200 px-10 py-4 rounded-full text-p-md font-medium hover:bg-gray-50 transition-all shadow-sm">
                 Download App
               </button>
             </div>
@@ -66,7 +66,7 @@ export function HeroSection() {
         {/* Phone Mockups */}
         <ScrollFadeIn delay={0.3}>
           <div className="relative w-full flex justify-center items-end">
-            <div className="relative shrink-0 w-[150%] max-w-none md:w-full md:max-w-[1000px]">
+            <div className="relative w-full max-w-[1000px]">
               <Image
                 src="/hero/phones.png"
                 alt="Apex Network mobile app"

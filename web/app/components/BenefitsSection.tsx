@@ -1,6 +1,8 @@
 "use client";
 
 import { ScrollFadeIn } from "./ScrollFadeIn";
+import { CarouselArrows } from "./CarouselArrows";
+import { useCarousel } from "./useCarousel";
 
 const benefits = [
   {
@@ -36,6 +38,8 @@ const benefits = [
 ];
 
 export function BenefitsSection() {
+  const { trackRef, scrollPrev, scrollNext } = useCarousel();
+
   return (
     <section className="py-24 bg-gray-50">
       <div className="page-container">
@@ -48,9 +52,17 @@ export function BenefitsSection() {
           </div>
         </ScrollFadeIn>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div
+          ref={trackRef}
+          className="no-scrollbar flex gap-4 overflow-x-auto snap-x snap-mandatory -mx-6 px-6
+                     md:mx-0 md:px-0 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-6 md:overflow-visible"
+        >
           {benefits.map((benefit, index) => (
-            <ScrollFadeIn key={benefit.title + index} delay={index * 0.06}>
+            <ScrollFadeIn
+              key={benefit.title + index}
+              delay={index * 0.06}
+              className="snap-start shrink-0 w-[81%] sm:w-[55%] md:w-auto"
+            >
               <div className="bg-white rounded-2xl p-8 h-full flex flex-col relative overflow-hidden" style={{ minHeight: '340px' }}>
                 {/* Icon in top right corner */}
                 <img
@@ -78,6 +90,12 @@ export function BenefitsSection() {
             </ScrollFadeIn>
           ))}
         </div>
+
+        <CarouselArrows
+          onPrev={scrollPrev}
+          onNext={scrollNext}
+          className="md:hidden justify-center mt-8"
+        />
       </div>
     </section>
   );

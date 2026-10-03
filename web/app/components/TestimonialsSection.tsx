@@ -2,6 +2,8 @@
 
 import Image from "next/image";
 import { ScrollFadeIn } from "./ScrollFadeIn";
+import { CarouselArrows } from "./CarouselArrows";
+import { useCarousel } from "./useCarousel";
 
 type Testimonial = {
   name: string;
@@ -64,6 +66,7 @@ function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
 
 export function TestimonialsSection() {
   const [featured, ...rest] = testimonials;
+  const { trackRef, scrollPrev, scrollNext } = useCarousel();
 
   return (
     <section className="py-24 bg-white">
@@ -80,8 +83,12 @@ export function TestimonialsSection() {
           </div>
         </ScrollFadeIn>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-5">
-          <ScrollFadeIn className="md:col-span-2 lg:col-span-6">
+        <div
+          ref={trackRef}
+          className="no-scrollbar flex gap-4 overflow-x-auto snap-x snap-mandatory -mx-6 px-6
+                     md:mx-0 md:px-0 md:grid md:grid-cols-2 lg:grid-cols-12 md:gap-5 md:overflow-visible"
+        >
+          <ScrollFadeIn className="snap-start shrink-0 w-[72%] md:w-auto md:col-span-2 lg:col-span-6">
             <TestimonialCard testimonial={featured} />
           </ScrollFadeIn>
 
@@ -89,12 +96,18 @@ export function TestimonialsSection() {
             <ScrollFadeIn
               key={testimonial.name}
               delay={(index + 1) * 0.1}
-              className="lg:col-span-3"
+              className="snap-start shrink-0 w-[55%] md:w-auto lg:col-span-3"
             >
               <TestimonialCard testimonial={testimonial} />
             </ScrollFadeIn>
           ))}
         </div>
+
+        <CarouselArrows
+          onPrev={scrollPrev}
+          onNext={scrollNext}
+          className="md:hidden justify-center mt-8"
+        />
       </div>
     </section>
   );
