@@ -21,24 +21,28 @@ export function HeroSection() {
   }, []);
 
   return (
-    <section className="relative bg-white overflow-hidden">
-      {/* Background video */}
-      <video
-        ref={videoRef}
-        className="absolute inset-0 w-full h-full object-cover motion-reduce:hidden"
-        src="/video/hero-bg.mp4"
-        autoPlay
-        muted
-        loop
-        playsInline
-        preload="auto"
-        aria-hidden="true"
-      />
+    // 20px gutter around a 40px-radius shell; everything in the hero — nav area,
+    // copy, CTAs, the gradient video and the phones — lives inside it.
+    <section className="bg-white px-5 pt-5">
+      <div className="relative overflow-hidden rounded-[40px]">
+        {/* Background video */}
+        <video
+          ref={videoRef}
+          className="absolute inset-0 w-full h-full object-cover motion-reduce:hidden"
+          src="/video/hero-bg.mp4"
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="auto"
+          aria-hidden="true"
+        />
 
-      {/* Light top fade so the sticky nav stays clean over the video */}
-      <div className="absolute inset-x-0 top-0 h-48 bg-gradient-to-b from-white via-white/70 to-transparent pointer-events-none" />
+        {/* Light top fade so the sticky nav stays clean over the video */}
+        <div className="absolute inset-x-0 top-0 h-48 bg-gradient-to-b from-white via-white/70 to-transparent pointer-events-none" />
 
-      <div className="relative page-container w-full pt-40 pb-0 z-10">
+        {/* lighter inner gutter than .page-container — the shell already insets the hero */}
+        <div className="relative mx-auto max-w-[1440px] w-full px-5 md:px-12 lg:px-[100px] pt-40 pb-0 z-10">
         {/* Heading Content */}
         <ScrollFadeIn>
           <div className="flex flex-col items-center text-center gap-8 mb-12 relative">
@@ -53,7 +57,7 @@ export function HeroSection() {
               <br className="hidden md:block" /> cryptocurrencies with more possibilities
             </p>
             <div className="flex flex-col sm:flex-row gap-4 pt-2 w-full sm:w-auto">
-              <button className="w-full sm:w-auto bg-black text-white px-10 py-4 rounded-full text-p-md font-medium hover:bg-gray-900 transition-all">
+              <button className="w-full sm:w-auto btn-dark hover:btn-dark-hover text-white px-10 py-3.5 rounded-full text-p-md font-medium transition-all">
                 Get Started
               </button>
               <button className="w-full sm:w-auto bg-white text-black border border-gray-200 px-10 py-4 rounded-full text-p-md font-medium hover:bg-gray-50 transition-all shadow-sm">
@@ -70,15 +74,16 @@ export function HeroSection() {
               <Image
                 src="/hero/phones.png"
                 alt="Apex Network mobile app"
-                width={819}
-                height={411}
+                width={1891}
+                height={796}
                 priority
                 unoptimized
                 className="w-full h-auto object-contain"
               />
+              </div>
             </div>
-          </div>
-        </ScrollFadeIn>
+          </ScrollFadeIn>
+        </div>
       </div>
     </section>
   );

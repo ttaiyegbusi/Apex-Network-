@@ -37,7 +37,7 @@ export function Footer() {
               in dollars, all from one app.
             </p>
             <div className="flex flex-col sm:flex-row gap-3">
-              <button className="bg-black text-white px-7 py-3 rounded-full text-p-md font-medium hover:bg-gray-900 transition">
+              <button className="btn-dark hover:btn-dark-hover text-white px-7 py-3 rounded-full text-p-md font-medium transition">
                 Get Started
               </button>
               <button className="bg-white text-black border border-gray-200 px-7 py-3 rounded-full text-p-md font-medium hover:bg-gray-50 transition">

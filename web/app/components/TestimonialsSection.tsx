@@ -125,7 +125,7 @@ export function TestimonialsSection() {
         {/* Mobile: swipeable carousel — there is no hover on touch */}
         <div
           ref={trackRef}
-          className="no-scrollbar flex gap-4 overflow-x-auto snap-x snap-mandatory -mx-6 px-6 md:hidden"
+          className="no-scrollbar flex gap-4 overflow-x-auto snap-x snap-mandatory -mx-6 px-5 scroll-pl-5 md:hidden"
         >
           {testimonials.map((testimonial, index) => (
             <ScrollFadeIn

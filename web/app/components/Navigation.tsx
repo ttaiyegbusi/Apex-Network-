@@ -58,7 +58,7 @@ export function Navigation() {
                 <path d="M3 4.5L6 7.5L9 4.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
               </svg>
             </button>
-            <button className="bg-black text-white px-6 py-2.5 rounded-full text-p-sm font-medium hover:bg-gray-900 transition">
+            <button className="btn-dark hover:btn-dark-hover text-white px-6 py-2.5 rounded-full text-p-sm font-medium transition">
               Login
             </button>
             <button className="bg-white text-black border border-gray-200 px-5 py-2.5 rounded-full text-p-sm font-medium hover:bg-gray-50 transition">
@@ -96,7 +96,7 @@ export function Navigation() {
                 {link}
               </button>
             ))}
-            <button className="bg-black text-white px-6 py-3 rounded-full font-medium mt-2">
+            <button className="btn-dark text-white px-6 py-3 rounded-full font-medium mt-2">
               Login
             </button>
             <button className="bg-white text-black border border-gray-200 px-6 py-3 rounded-full font-medium">

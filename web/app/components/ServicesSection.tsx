@@ -1,6 +1,8 @@
 "use client";
 
 import Image from "next/image";
+import { useRef } from "react";
+import { motion, useInView, useReducedMotion } from "framer-motion";
 import { ScrollFadeIn } from "./ScrollFadeIn";
 
 const services = [
@@ -26,7 +28,17 @@ const services = [
   },
 ];
 
+// Cards glide in from the right, one after another.
+const CARD_SHIFT = 90;        // px each card travels
+const CARD_DURATION = 0.85;   // long enough to read as deliberate, not snappy
+const CARD_STAGGER = 0.12;    // gap between consecutive cards
+const CARD_EASE = [0.22, 1, 0.36, 1] as const; // easeOutQuint: quick start, soft landing
+
 export function ServicesSection() {
+  const gridRef = useRef<HTMLDivElement>(null);
+  const inView = useInView(gridRef, { once: false, margin: "-12%" });
+  const reduceMotion = useReducedMotion();
+
   return (
     <section className="py-24 bg-white">
       <div className="page-container">
@@ -47,7 +59,7 @@ export function ServicesSection() {
                 From the gift card in your inbox to the light bill on your table, Apex gets it done in a few taps.
               </p>
               <div className="flex flex-col sm:flex-row gap-3">
-                <button className="bg-black text-white px-8 py-3.5 rounded-full text-p-md font-medium hover:bg-gray-900 transition">
+                <button className="btn-dark hover:btn-dark-hover text-white px-8 py-3.5 rounded-full text-p-md font-medium transition">
                   Get Started
                 </button>
                 <button className="bg-white text-black border border-gray-200 px-8 py-3.5 rounded-full text-p-md font-medium hover:bg-gray-50 transition">
@@ -59,9 +71,26 @@ export function ServicesSection() {
         </div>
 
         {/* Service Cards Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
+        <div ref={gridRef} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2.5">
           {services.map((service, index) => (
-            <ScrollFadeIn key={service.title} delay={index * 0.08}>
+            <motion.div
+              key={service.title}
+              initial={false}
+              animate={
+                reduceMotion || inView
+                  ? { opacity: 1, x: 0, scale: 1 }
+                  : { opacity: 0, x: CARD_SHIFT, scale: 0.97 }
+              }
+              transition={
+                reduceMotion
+                  ? { duration: 0 }
+                  : {
+                      duration: CARD_DURATION,
+                      delay: inView ? index * CARD_STAGGER : 0,
+                      ease: CARD_EASE,
+                    }
+              }
+            >
               <div className="bg-gray-50 rounded-3xl p-8 h-full flex flex-col min-h-[320px]">
                 {/* 3D Icon */}
                 <div className="relative w-28 h-28 -ml-2">
@@ -84,7 +113,7 @@ export function ServicesSection() {
                   </p>
                 </div>
               </div>
-            </ScrollFadeIn>
+            </motion.div>
           ))}
         </div>
       </div>

@@ -54,8 +54,8 @@ export function BenefitsSection() {
 
         <div
           ref={trackRef}
-          className="no-scrollbar flex gap-4 overflow-x-auto snap-x snap-mandatory -mx-6 px-6
-                     md:mx-0 md:px-0 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-6 md:overflow-visible"
+          className="no-scrollbar flex gap-4 overflow-x-auto snap-x snap-mandatory -mx-6 px-5 scroll-pl-5
+                     md:mx-0 md:px-0 md:scroll-pl-0 md:grid md:grid-cols-2 lg:grid-cols-3 md:gap-6 md:overflow-visible"
         >
           {benefits.map((benefit, index) => (
             <ScrollFadeIn

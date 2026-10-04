@@ -52,7 +52,7 @@ export function BlogSection() {
 
         <div
           ref={trackRef}
-          className="no-scrollbar flex gap-6 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-4 -mx-6 px-6 lg:mx-0 lg:px-0"
+          className="no-scrollbar flex gap-6 overflow-x-auto snap-x snap-mandatory scroll-smooth pb-4 -mx-6 px-5 scroll-pl-5 lg:mx-0 lg:px-0 lg:scroll-pl-0"
           style={{ scrollbarWidth: "none" }}
         >
           {posts.map((post) => (
