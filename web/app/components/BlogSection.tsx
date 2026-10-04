@@ -1,8 +1,13 @@
 "use client";
 
+import Image from "next/image";
 import { ScrollFadeIn } from "./ScrollFadeIn";
 import { CarouselArrows } from "./CarouselArrows";
 import { useCarousel } from "./useCarousel";
+
+// One thumbnail export was supplied, so every post points at it for now. The field
+// is per-post, so dropping in individual artwork later is a one-line change each.
+const THUMBNAIL = "/blog/thumbnail.png";
 
 const posts = [
   {
@@ -10,24 +15,28 @@ const posts = [
     excerpt:
       "It's your money and it's our responsibility to keep it safe and protected for you.",
     date: "April 11, 2021",
+    image: THUMBNAIL,
   },
   {
     title: "How to sell a gift card on Apex.",
     excerpt:
       "From upload to payout: what to do, how long it takes, and how to avoid a rejected trade.",
     date: "April 10, 2021",
+    image: THUMBNAIL,
   },
   {
     title: "5 gift card scams to watch out for",
     excerpt:
       "Spot fake buyers, used codes and phishing messages before they cost you.",
     date: "April 9, 2021",
+    image: THUMBNAIL,
   },
   {
     title: "USDT vs BTC: which should you hold?",
     excerpt:
       "A plain-English look at what each is best for, volatility and when to swap.",
     date: "April 8, 2021",
+    image: THUMBNAIL,
   },
 ];
 
@@ -60,21 +69,18 @@ export function BlogSection() {
               key={post.title}
               className="snap-start shrink-0 w-[88%] sm:w-[300px] cursor-pointer"
             >
-              {/* Thumbnail */}
-              <div
-                className="w-full h-44 rounded-2xl mb-4 overflow-hidden relative"
-                style={{
-                  background:
-                    "linear-gradient(135deg, var(--color-orange-300) 0%, var(--color-orange-400) 45%, var(--color-primary) 100%)",
-                }}
-              >
-                <div
-                  className="absolute inset-0 opacity-30"
-                  style={{
-                    backgroundImage:
-                      "linear-gradient(90deg, rgba(255,255,255,0.35) 1px, transparent 1px), linear-gradient(rgba(255,255,255,0.25) 1px, transparent 1px)",
-                    backgroundSize: "56px 56px",
-                  }}
+              {/* Thumbnail. The artwork is abstract and carries no information the
+                  title doesn't already give, so it's decorative: alt is empty.
+                  `unoptimized` because its rounded corners are transparent, and the
+                  image optimizer flattens alpha to opaque white. */}
+              <div className="w-full h-44 rounded-2xl mb-4 overflow-hidden relative">
+                <Image
+                  src={post.image}
+                  alt=""
+                  fill
+                  unoptimized
+                  sizes="(min-width: 640px) 300px, 88vw"
+                  className="object-cover"
                 />
               </div>
 

@@ -35,8 +35,12 @@ export function BannerSection() {
       <motion.div
         style={{
           clipPath,
-          background:
-            "linear-gradient(135deg, var(--color-orange-400) 0%, var(--color-primary) 55%, var(--color-orange-600) 100%)",
+          // Flat #fb8e0b with a fine dot texture, supplied as an export. The colour
+          // underneath matches the image exactly, so there is no flash before it loads.
+          backgroundColor: "var(--color-primary)",
+          backgroundImage: "url(/banner/banner-bg.jpg)",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
         }}
         className="w-full"
       >

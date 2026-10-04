@@ -1,7 +1,8 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useRef, useState } from "react";
+import { motion, useInView, useReducedMotion } from "framer-motion";
 import { ScrollFadeIn } from "./ScrollFadeIn";
 import { CarouselArrows } from "./CarouselArrows";
 import { useCarousel } from "./useCarousel";
@@ -36,6 +37,14 @@ const testimonials: Testimonial[] = [
 
 /** Ratio of an expanded panel to a collapsed one, measured from the design (514px : 248px). */
 const EXPANDED_GROW = 2.07;
+
+// Panels glide in from the right, one after another. These mirror the service
+// cards in ServicesSection so the two sections read as the same gesture — keep
+// them in step if either set is retuned.
+const CARD_SHIFT = 90;        // px each card travels
+const CARD_DURATION = 0.85;   // long enough to read as deliberate, not snappy
+const CARD_STAGGER = 0.12;    // gap between consecutive cards
+const CARD_EASE = [0.22, 1, 0.36, 1] as const; // easeOutQuint: quick start, soft landing
 
 function TestimonialCard({
   testimonial,
@@ -88,6 +97,10 @@ export function TestimonialsSection() {
   const { trackRef, scrollPrev, scrollNext } = useCarousel();
   const [active, setActive] = useState(0);
 
+  const rowRef = useRef<HTMLDivElement>(null);
+  const inView = useInView(rowRef, { once: false, margin: "-12%" });
+  const reduceMotion = useReducedMotion();
+
   return (
     <section className="py-24 bg-white">
       <div className="page-container">
@@ -104,10 +117,10 @@ export function TestimonialsSection() {
         </ScrollFadeIn>
 
         {/* Desktop / tablet: panels that expand on hover */}
-        <ScrollFadeIn className="hidden md:block">
-          <div className="flex gap-5 h-[400px] lg:h-[440px]">
+        <div className="hidden md:block">
+          <div ref={rowRef} className="flex gap-5 h-[400px] lg:h-[440px]">
             {testimonials.map((testimonial, index) => (
-              <div
+              <motion.div
                 key={testimonial.name}
                 onMouseEnter={() => setActive(index)}
                 onFocus={() => setActive(index)}
@@ -115,12 +128,27 @@ export function TestimonialsSection() {
                 aria-label={`${testimonial.name}, ${testimonial.location}`}
                 className="relative min-w-0 cursor-pointer rounded-2xl transition-[flex-grow] duration-500 ease-out focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
                 style={{ flexGrow: active === index ? EXPANDED_GROW : 1, flexBasis: 0 }}
+                initial={false}
+                animate={
+                  reduceMotion || inView
+                    ? { opacity: 1, x: 0, scale: 1 }
+                    : { opacity: 0, x: CARD_SHIFT, scale: 0.97 }
+                }
+                transition={
+                  reduceMotion
+                    ? { duration: 0 }
+                    : {
+                        duration: CARD_DURATION,
+                        delay: inView ? index * CARD_STAGGER : 0,
+                        ease: CARD_EASE,
+                      }
+                }
               >
                 <TestimonialCard testimonial={testimonial} expanded={active === index} />
-              </div>
+              </motion.div>
             ))}
           </div>
-        </ScrollFadeIn>
+        </div>
 
         {/* Mobile: swipeable carousel — there is no hover on touch */}
         <div
