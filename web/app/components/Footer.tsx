@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { FooterWordmark } from "./FooterWordmark";
 
 const footerColumns = [
   {
@@ -68,19 +69,9 @@ export function Footer() {
         </div>
       </div>
 
-      {/* Oversized wordmark watermark */}
-      <div
-        aria-hidden="true"
-        className="select-none pointer-events-none text-center leading-none mt-16"
-        style={{
-          fontSize: "clamp(6rem, 22vw, 20rem)",
-          fontWeight: 700,
-          color: "var(--color-gray-100)",
-          letterSpacing: "-0.03em",
-          marginBottom: "-0.22em",
-        }}
-      >
-        Apex
+      {/* Oversized wordmark — spans the container width, letters slide up in sequence */}
+      <div className="page-container">
+        <FooterWordmark text="Apex" />
       </div>
     </footer>
   );

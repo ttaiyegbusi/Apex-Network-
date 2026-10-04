@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { useState } from "react";
 import { ScrollFadeIn } from "./ScrollFadeIn";
 import { CarouselArrows } from "./CarouselArrows";
 import { useCarousel } from "./useCarousel";
@@ -33,10 +34,19 @@ const testimonials: Testimonial[] = [
   },
 ];
 
-function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
+/** Ratio of an expanded panel to a collapsed one, measured from the design (514px : 248px). */
+const EXPANDED_GROW = 2.07;
+
+function TestimonialCard({
+  testimonial,
+  expanded,
+}: {
+  testimonial: Testimonial;
+  expanded: boolean;
+}) {
   return (
     <div
-      className="relative rounded-2xl overflow-hidden h-full min-h-[340px] md:min-h-[400px] lg:min-h-[440px]"
+      className="relative rounded-2xl overflow-hidden h-full w-full"
       style={{ background: testimonial.gradient }}
     >
       {testimonial.photo && (
@@ -48,16 +58,26 @@ function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
         />
       )}
 
-      {/* Bottom scrim so text stays legible over any photo */}
+      {/* scrim so the caption stays legible over any photo */}
       <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/85 via-black/40 to-transparent pointer-events-none" />
 
       <div className="absolute inset-x-0 bottom-0 p-6 text-white">
-        <p className="text-label-lg">{testimonial.name}</p>
-        <p className="text-p-sm text-white/70 mt-0.5">{testimonial.location}</p>
+        <p className="text-label-lg whitespace-nowrap">{testimonial.name}</p>
+        <p className="text-p-sm text-white/70 mt-0.5 whitespace-nowrap">
+          {testimonial.location}
+        </p>
+
         {testimonial.quote && (
-          <p className="mt-4 text-p-md text-white/95 max-w-md">
-            {testimonial.quote}
-          </p>
+          // 0fr -> 1fr animates the height without needing a fixed value
+          <div
+            className={`grid transition-all duration-500 ease-out ${
+              expanded ? "grid-rows-[1fr] opacity-100 mt-4" : "grid-rows-[0fr] opacity-0 mt-0"
+            }`}
+          >
+            <p className="overflow-hidden text-p-md text-white/95 max-w-md">
+              {testimonial.quote}
+            </p>
+          </div>
         )}
       </div>
     </div>
@@ -65,8 +85,8 @@ function TestimonialCard({ testimonial }: { testimonial: Testimonial }) {
 }
 
 export function TestimonialsSection() {
-  const [featured, ...rest] = testimonials;
   const { trackRef, scrollPrev, scrollNext } = useCarousel();
+  const [active, setActive] = useState(0);
 
   return (
     <section className="py-24 bg-white">
@@ -83,22 +103,39 @@ export function TestimonialsSection() {
           </div>
         </ScrollFadeIn>
 
+        {/* Desktop / tablet: panels that expand on hover */}
+        <ScrollFadeIn className="hidden md:block">
+          <div className="flex gap-5 h-[400px] lg:h-[440px]">
+            {testimonials.map((testimonial, index) => (
+              <div
+                key={testimonial.name}
+                onMouseEnter={() => setActive(index)}
+                onFocus={() => setActive(index)}
+                tabIndex={0}
+                aria-label={`${testimonial.name}, ${testimonial.location}`}
+                className="relative min-w-0 cursor-pointer rounded-2xl transition-[flex-grow] duration-500 ease-out focus:outline-none focus-visible:ring-2 focus-visible:ring-primary"
+                style={{ flexGrow: active === index ? EXPANDED_GROW : 1, flexBasis: 0 }}
+              >
+                <TestimonialCard testimonial={testimonial} expanded={active === index} />
+              </div>
+            ))}
+          </div>
+        </ScrollFadeIn>
+
+        {/* Mobile: swipeable carousel — there is no hover on touch */}
         <div
           ref={trackRef}
-          className="no-scrollbar flex gap-4 overflow-x-auto snap-x snap-mandatory -mx-6 px-6
-                     md:mx-0 md:px-0 md:grid md:grid-cols-2 lg:grid-cols-12 md:gap-5 md:overflow-visible"
+          className="no-scrollbar flex gap-4 overflow-x-auto snap-x snap-mandatory -mx-6 px-6 md:hidden"
         >
-          <ScrollFadeIn className="snap-start shrink-0 w-[72%] md:w-auto md:col-span-2 lg:col-span-6">
-            <TestimonialCard testimonial={featured} />
-          </ScrollFadeIn>
-
-          {rest.map((testimonial, index) => (
+          {testimonials.map((testimonial, index) => (
             <ScrollFadeIn
               key={testimonial.name}
-              delay={(index + 1) * 0.1}
-              className="snap-start shrink-0 w-[55%] md:w-auto lg:col-span-3"
+              delay={index * 0.1}
+              className={`snap-start shrink-0 ${index === 0 ? "w-[72%]" : "w-[55%]"}`}
             >
-              <TestimonialCard testimonial={testimonial} />
+              <div className="h-[340px]">
+                <TestimonialCard testimonial={testimonial} expanded={index === 0} />
+              </div>
             </ScrollFadeIn>
           ))}
         </div>
