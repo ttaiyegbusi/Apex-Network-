@@ -69,13 +69,21 @@ export function BannerSection() {
             </ScrollFadeIn>
 
             <ScrollFadeIn delay={0.15}>
-              <div className="relative hidden lg:block h-[400px]">
-                <div className="absolute inset-x-0 bottom-0 translate-y-10">
+              {/* Visible at every width — the phones are the point of the banner.
+                  Below lg the image just flows, so the column is exactly as tall as
+                  the artwork and no dead space opens up above it. From lg it is
+                  pinned to the bottom of a fixed-height column as before. Either
+                  way the 40px nudge lets the band's clip-path crop the handsets. */}
+              <div className="relative lg:h-[400px]">
+                <div className="lg:absolute inset-x-0 bottom-0 translate-y-10">
+                  {/* Banner-specific crop: tighter than the hero's phones.png, so the
+                      screens stay readable at this size. Cut out of a white-background
+                      export, hence the alpha — and hence `unoptimized`. */}
                   <Image
-                    src="/hero/phones.png"
+                    src="/banner/phones-banner.png"
                     alt="Apex Network mobile app"
-                    width={1891}
-                    height={796}
+                    width={668}
+                    height={354}
                     unoptimized
                     className="w-full h-auto object-contain"
                   />

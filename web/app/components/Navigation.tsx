@@ -19,8 +19,14 @@ export function Navigation() {
 
   return (
     <nav
+      // The bar is transparent over the hero, but an OPEN mobile menu needs a
+      // surface of its own — otherwise the panel sits directly on the hero and the
+      // links are unreadable. Opening the menu gives it the same treatment that
+      // scrolling does.
       className={`fixed w-full top-0 z-50 transition-all duration-300 ${
-        isScrolled ? "bg-white/95 shadow-sm backdrop-blur-md" : "bg-transparent"
+        isScrolled || isOpen
+          ? "bg-white/95 shadow-sm backdrop-blur-md"
+          : "bg-transparent"
       }`}
     >
       <div className="page-container py-5">

@@ -18,6 +18,7 @@ type Testimonial = {
 const testimonials: Testimonial[] = [
   {
     name: "John",
+    photo: "/testimonials/john.webp",
     location: "Lagos, Nigeria",
     quote:
       "I can move money, pay bills, and manage everything from one app. It just makes things simpler.",
@@ -25,11 +26,13 @@ const testimonials: Testimonial[] = [
   },
   {
     name: "Bolatito",
+    photo: "/testimonials/bolatito.png",
     location: "Lagos, Nigeria",
     gradient: "linear-gradient(145deg, #C9A227 0%, #6B5410 100%)",
   },
   {
     name: "Christopher",
+    photo: "/testimonials/christopher.webp",
     location: "Nairobi, Kenya",
     gradient: "linear-gradient(145deg, #8B4513 0%, #3A1D08 100%)",
   },
@@ -63,6 +66,8 @@ function TestimonialCard({
           src={testimonial.photo}
           alt={testimonial.name}
           fill
+          unoptimized
+          sizes="(min-width: 1024px) 520px, (min-width: 768px) 420px, 72vw"
           className="object-cover object-top"
         />
       )}

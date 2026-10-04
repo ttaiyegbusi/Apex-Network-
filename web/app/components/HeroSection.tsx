@@ -57,10 +57,13 @@ export function HeroSection() {
               <br className="hidden md:block" /> cryptocurrencies with more possibilities
             </p>
             <div className="flex flex-col sm:flex-row gap-4 pt-2 w-full sm:w-auto">
-              <button className="w-full sm:w-auto btn-dark hover:btn-dark-hover text-white px-10 py-3.5 rounded-full text-p-md font-medium transition-all">
+              {/* Both buttons carry a border and identical padding so they end up the
+                  same height — the outlined one used to be 6px taller (py-4 vs
+                  py-3.5, plus its 1px border on each edge). */}
+              <button className="w-full sm:w-auto btn-dark hover:btn-dark-hover text-white border border-transparent px-10 py-3.5 rounded-full text-p-md font-medium transition-all">
                 Get Started
               </button>
-              <button className="w-full sm:w-auto bg-white text-black border border-gray-200 px-10 py-4 rounded-full text-p-md font-medium hover:bg-gray-50 transition-all shadow-sm">
+              <button className="w-full sm:w-auto bg-white text-black border border-gray-200 px-10 py-3.5 rounded-full text-p-md font-medium hover:bg-gray-50 transition-all shadow-sm">
                 Download App
               </button>
             </div>
@@ -74,7 +77,7 @@ export function HeroSection() {
               <Image
                 src="/hero/phones.png"
                 alt="Apex Network mobile app"
-                width={1891}
+                width={1638}
                 height={796}
                 priority
                 unoptimized

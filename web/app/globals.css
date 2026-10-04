@@ -188,6 +188,16 @@ body {
 }
 
 /* Hide the horizontal scrollbar on the blog carousel track */
+/* Nothing may drag the page sideways. `clip` rather than `hidden` on purpose:
+   hidden would turn these into scroll containers and force the other axis to
+   auto, which breaks position:sticky further down the tree. This is a guard,
+   not a licence to overflow — it is deliberately NOT on a `*` selector, since
+   unlayered rules beat Tailwind's layered utilities. */
+html,
+body {
+  overflow-x: clip;
+}
+
 .no-scrollbar {
   scrollbar-width: none;
 }
