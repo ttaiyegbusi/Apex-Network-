@@ -58,7 +58,10 @@ export function BannerSection() {
                   free, check your rate, and get paid in Naira today.
                 </p>
                 <div className="flex flex-col sm:flex-row gap-3">
-                  <button className="btn-dark hover:btn-dark-hover text-white px-8 py-3.5 rounded-full text-p-md font-medium transition">
+                  {/* Matching border on both so they end up the same height — the outlined
+                      sibling's 1px border otherwise makes it 2px taller wherever they
+                      stack instead of stretching to a shared row height. */}
+                  <button className="btn-dark hover:btn-dark-hover text-white border border-transparent px-8 py-3.5 rounded-full text-p-md font-medium transition">
                     Get Started
                   </button>
                   <button className="border border-white text-white px-8 py-3.5 rounded-full text-p-md font-medium hover:bg-white/10 transition">

@@ -12,6 +12,13 @@ type Testimonial = {
   location: string;
   quote?: string;
   photo?: string;
+  /** Vertical `object-position`. The three portraits are framed very differently
+      — Bolatito's face sits ~18% down her frame, Christopher's ~30% because his
+      head fills far more of his — so with a shared `object-top` the expanded
+      panels put their faces at 39% and 65% of the card. These values pull both
+      to ~32%. John needs none: his landscape source has no vertical overflow to
+      shift, so his face is fixed at 25% whatever we do. */
+  objectPosition?: string;
   gradient: string;
 };
 
@@ -26,13 +33,15 @@ const testimonials: Testimonial[] = [
   },
   {
     name: "Bolatito",
-    photo: "/testimonials/bolatito.png",
+    photo: "/testimonials/bolatito.webp",
+    objectPosition: "50% 4%",
     location: "Lagos, Nigeria",
     gradient: "linear-gradient(145deg, #C9A227 0%, #6B5410 100%)",
   },
   {
     name: "Christopher",
     photo: "/testimonials/christopher.webp",
+    objectPosition: "50% 28%",
     location: "Nairobi, Kenya",
     gradient: "linear-gradient(145deg, #8B4513 0%, #3A1D08 100%)",
   },
@@ -68,7 +77,8 @@ function TestimonialCard({
           fill
           unoptimized
           sizes="(min-width: 1024px) 520px, (min-width: 768px) 420px, 72vw"
-          className="object-cover object-top"
+          className="object-cover"
+          style={{ objectPosition: testimonial.objectPosition ?? "50% 0%" }}
         />
       )}
 

@@ -59,7 +59,10 @@ export function ServicesSection() {
                 From the gift card in your inbox to the light bill on your table, Apex gets it done in a few taps.
               </p>
               <div className="flex flex-col sm:flex-row gap-3">
-                <button className="btn-dark hover:btn-dark-hover text-white px-8 py-3.5 rounded-full text-p-md font-medium transition">
+                {/* Matching border on both so they end up the same height — the outlined
+                      sibling's 1px border otherwise makes it 2px taller wherever they
+                      stack instead of stretching to a shared row height. */}
+                <button className="btn-dark hover:btn-dark-hover text-white border border-transparent px-8 py-3.5 rounded-full text-p-md font-medium transition">
                   Get Started
                 </button>
                 <button className="bg-white text-black border border-gray-200 px-8 py-3.5 rounded-full text-p-md font-medium hover:bg-gray-50 transition">
