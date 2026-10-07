@@ -17,6 +17,29 @@ export function Navigation() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
+  // Hold the page still behind the open menu. This goes on <html>, not <body>:
+  // <html> is the scrolling element here, so locking <body> does nothing (and
+  // measuring showed it also collapsed the `overflow-x: clip` guard to `hidden`).
+  // Only the y-axis is touched, so that guard is left alone. The menu's trigger
+  // is lg:hidden, so widening past lg would otherwise strand the page locked with
+  // nothing on screen to unlock it; closing at that breakpoint avoids the dead end.
+  useEffect(() => {
+    if (!isOpen) return;
+
+    const root = document.documentElement;
+    const previous = root.style.overflowY;
+    root.style.overflowY = "hidden";
+
+    const desktop = window.matchMedia("(min-width: 1024px)");
+    const closeOnDesktop = () => desktop.matches && setIsOpen(false);
+    desktop.addEventListener("change", closeOnDesktop);
+
+    return () => {
+      root.style.overflowY = previous;
+      desktop.removeEventListener("change", closeOnDesktop);
+    };
+  }, [isOpen]);
+
   return (
     <nav
       // The bar is transparent over the hero, but an OPEN mobile menu needs a

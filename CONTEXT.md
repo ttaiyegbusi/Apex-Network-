@@ -113,12 +113,17 @@ TestimonialsSection → FAQSection → BlogSection → BannerSection → Footer
 
 **Navigation** — fixed/sticky, transparent at top, white + shadow on scroll.
 Links: Features · Rates · Business. CTAs: ENG selector, Login, Open an Account.
+The **open mobile menu also triggers the white background** — the panel has no
+surface of its own, so over the transparent bar the links sat straight on the hero.
+Opening it locks page scroll (see Gotchas) and it auto-closes at `lg`.
 
 **HeroSection** — everything sits in a **20px-gutter, 40px-radius shell**
 (`overflow-hidden`) that contains the background video, copy, CTAs and phones.
 The 20px gutter holds at **all** breakpoints (explicitly requested).
 - Background: looping muted `/video/hero-bg.mp4`, respects `prefers-reduced-motion`
-- Phones: `/hero/phones.png`, 1891×796, transparent, `unoptimized`
+- Phones: `/hero/phones.png`, **1638×796**, transparent, `unoptimized`. Originally
+  1891×796 with 253px of empty space on its left and none on its right, which threw
+  the artwork 126px right of centre; cropped so it is actually centred.
 
 **ServicesSection** — "One app for the money moves you make every day".
 4 cards: Bills · Virtual Cards · Requests · Gift cards.
@@ -135,14 +140,24 @@ background built in**, so don't wrap them in a CSS circle.
 Desktop: **hover-expanding panels**, flex-grow `2.07 : 1 : 1` (measured from design),
 500ms transition, quote height-animates via `grid-rows-[0fr→1fr]`.
 Mobile: carousel (no hover on touch).
+Panels **glide in from the right, staggered**, sharing Services' timing values.
+Portraits live in `/testimonials/` (all WebP — alpha survives, see Gotchas) and each
+carries its own `objectPosition`, because the three are framed differently: faces sit
+at 25% / 18% / 30% of their own frames, so one shared `object-top` put them at wildly
+different heights once expanded. Values solve for a common ~32%.
 
 **FAQSection** — two-column, category tabs (All / Account & Security /
 Deposit & Wallets / Technical Support), working accordion.
 Tab row scrolls horizontally on mobile.
 
 **BlogSection** — "Learn, trade smarter, stay safe", carousel with arrows beside heading.
+Thumbnails are a real asset now (`/blog/thumbnail.png`), but **all four posts share
+the one image** — the field is per-post, so individual art is a one-line change each.
 
 **BannerSection** — "Your payout is minutes away".
+Background is `/banner/banner-bg.jpg` (flat `#fb8e0b` + fine dot texture), not a
+gradient. Phones use their own tighter crop, `/banner/phones-banner.png`, cut out of
+a white-background JPEG export. They flow below `lg` and are bottom-pinned from `lg`.
 **Scroll-driven morph**: starts full-bleed, contracts into a rounded inset card as
 it scrolls in, via animated `clip-path: inset(...)`. Horizontal inset is a
 **percentage (7%)** so it scales — a fixed px value broke mobile badly.
@@ -183,6 +198,46 @@ When cutting assets out of exports:
   so seeding there let the fill walk up into the white phone screens and erase them.
 - For a **gradient** background, compare each pixel to its *neighbour*, not a fixed
   reference colour — follows the gradient, stops at hard edges.
+
+### A `fixed` + `w-full` element can inflate the document on mobile
+`position: fixed` sizes against the initial containing block, not the document. The
+nav measured **436px wide inside a 375px viewport**, pushing `scrollWidth` to 436 and
+letting the whole page drag sideways. `html`/`body` were correctly 375 and `100vw`
+was 375 — only `scrollWidth` disagreed, so check that specifically. `inset-x-0` does
+**not** help (same containing block). The fix is the `overflow-x: clip` guard on
+`html, body` in `globals.css`.
+
+Use **`clip`, not `hidden`** — `hidden` makes them scroll containers and forces the
+other axis to `auto`, which breaks `position: sticky` further down the tree. And keep
+it off a `*` selector (see the unlayered-CSS gotcha above).
+
+### Locking page scroll goes on `<html>`, not `<body>`
+`<html>` is the scrolling element here. Setting `body.style.overflow` does nothing to
+page scroll **and** silently collapses the `overflow-x: clip` guard to `hidden`. Set
+`documentElement.style.overflowY` instead, y-axis only, so the guard is untouched.
+
+Also: `overflow: hidden` still allows **programmatic** scrolling, so `window.scrollTo`
+is useless for testing a scroll lock — it will "succeed" against a working lock.
+Synthetic `WheelEvent`s don't scroll either. Verify with real trusted input.
+
+### Two buttons side by side need the same box model
+A bordered button is **2px taller** than an unbordered one at identical padding, and
+`py-4` vs `py-3.5` adds 4 more. This is invisible above `sm`, where `flex-row` stretch
+equalises them, and only shows on mobile where they stack. Give the borderless one
+`border border-transparent`. Hero, Services and Banner were all affected.
+
+### WebP keeps alpha; it is the right format for these exports
+The portraits and cutouts have transparent rounded corners. WebP preserved alpha
+**byte-exact** at every quality tested, while cutting `bolatito` from 434KB to 31KB
+(q=92, `method=6`). When checking quality, measure error on **opaque pixels only** —
+RGB in fully transparent pixels is undefined and will report a huge max diff that
+means nothing.
+
+### Check `object-position`, not just `object-cover`, for cropped portraits
+With `cover`, a source point at fraction `f` lands at `(f·Rh − D·P/100)/H` down the
+box, where `Rh` is the rendered height, `D = Rh − H` the overflow and `P` the
+`object-position` percentage. Invert it to place a face deliberately. If the source is
+wider than the box, `D = 0` and the vertical component does nothing at all.
 
 ### Grid/flex items don't shrink by default
 `min-width: auto` means a scrolling child forces its column wider, blowing out the
@@ -226,20 +281,28 @@ treat "it doesn't animate in the pane" as inconclusive.
 
 | # | Item |
 |---|---|
-| 1 | **Testimonial portraits** — John, Bolatito, Christopher. Currently gradient placeholders; `photo` field already wired in `TestimonialsSection.tsx`. |
+| 1 | **Every CTA is dead.** "Get Started", "Download App", "Login", "Open an Account" and the nav links are `<button>`s with no handler or destination; footer links are `href="#"`. Biggest functional gap — needs real URLs. |
 | 2 | **Testimonial quotes** for Bolatito and Christopher. Only John has one, so their expanded hover panels show just name + location. |
 | 3 | **FAQ answers** — only "Are there hidden fees?" came from the design. The other five I wrote; they're plausible but unverified. |
-| 4 | **Blog content** — titles/excerpts/dates are from the design screenshot; thumbnails are CSS gradient placeholders, no real images. |
+| 4 | **Blog copy** — titles/excerpts/dates are from the design screenshot, unverified. All four cards also share one thumbnail. |
 | 5 | **Hero accent colour** — `text-orange-950` is a guess (see §3). |
 | 6 | **Benefits icon mapping** — assigned in Figma export order. "Multiple Choice" (`-3`, two figures) is the least certain. |
 | 7 | **Inter Display** — using Inter's `opsz` axis as the equivalent. If a licensed standalone Inter Display file exists, self-host it instead. |
 | 8 | Line-heights, and several animation timings, were chosen by me — not from a spec. |
+| 9 | **`hero-bg.mp4` is 1MB**, ~45% of `public/` and the largest asset left. Needs re-encoding; ffmpeg was not installed on this machine. |
+
+**Resolved since this file was written:** testimonial portraits (now in
+`/testimonials/`, WebP, with per-person `objectPosition`); blog thumbnails (one
+shared asset); Christopher's and Bolatito's source framing.
 
 ---
 
 ## 8. Known minor issues
 
-- `next/image` warns about the logo: `width`/`height` set but only one overridden in
-  CSS. Adding `h-auto` to its className silences it.
+- Portrait framing is normalised by `objectPosition`, but Christopher's source is a
+  tighter shot than the other two, so he still reads as more zoomed-in. Only a wider
+  re-export fixes that.
+- `/blog/thumbnail.png` (350×200) and `/banner/phones-banner.png` (668×354) both
+  render larger than their native size on retina, so they look slightly soft.
 - `next.config.ts` is clean (the earlier `ignoreBuildErrors` workaround was removed;
   builds now run full TypeScript validation).
